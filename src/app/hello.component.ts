@@ -94,7 +94,7 @@ export class HelloComponent implements AfterViewInit {
   }
   getStockQuoteForNativeElement(stock: string) {
     console.log(
-      `(NativeElemennt) The price of $${stock} is ${(
+      `(NativeElemennt) The price of ${stock} is $${(
         100 * Math.random()
       ).toFixed(2)} `
     );
