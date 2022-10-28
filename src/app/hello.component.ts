@@ -6,18 +6,18 @@
   selector: 'hello',
   //templateUrl: './hello.component.html',
   template: `<div>
-  <label for="stock">KeyUp </label><br>
-  <input placeholder="Stock symbol..." id="stock" (keyup)="onKey($event)">
+  <label for="stock">OnKeyUp </label><br>
+  <input placeholder="Stock symbol..." id="stock" (keyup)="onKeyUp($event)">
   </div>
   <p>
   <div>
-  <label for="stockSymbolid">addEventListener </label><br>
+  <label for="stockSymbolid">addEventListener keyup </label><br>
   <input placeholder="Stock symbol ..." type="text" #stockSymbol  id="stockSymbolid"/>
   </div>
   <p>
   <div>
-  <label for="stockFormContrtol">FormControl </label><br>
-  <input type="text" placeholder="Enter stock" [formControl]="stockInput" id="stockFormContrtol" />
+  <label for="stockFormContrtol">FormControl Observable </label><br>
+  <input type="text" placeholder="Stock symbol ..." [formControl]="stockInput" id="stockFormContrtol" />
   </div>`,
   styles: [`h1 { font-family: Lato; }`],
 })
@@ -25,22 +25,33 @@ export class HelloComponent implements AfterViewInit {
   stockInput = new FormControl('');
   @Input() helloname: string;
   @ViewChild('stockSymbol') myInputField: ElementRef;
-  
+  private timeout1;
+
   constructor() {
       this.stockInput.valueChanges
       .pipe(debounceTime(500))
       .subscribe(stock => this.getStockQuoteFromServer(stock));
   }
   
-  onKey(event:any) {
-    console.log("You have entered " + event.target.value);
+  onKeyUp(event:any) {
+    if(this.timeout1) {
+      clearTimeout(this.timeout1);
+    }
+    this.timeout1 = setTimeout(() => {
+      console.log("You have entered " + event.target.value);
+    }, 500);
+    
   }
 
   ngAfterViewInit() {
+    let timeout;
     this.myInputField.nativeElement.addEventListener("keyup", event => {
-      setTimeout(() => {
+      if(timeout) {
+        clearTimeout(timeout);
+      }
+      timeout = setTimeout(() => {
          this.getStockPrice(event);
-      }, 1000);
+      }, 500);
     }, false);
   }
   
