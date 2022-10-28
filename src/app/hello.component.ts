@@ -1,4 +1,10 @@
-import { Component, ElementRef, Input, ViewChild, AfterViewInit  } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Input,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
 import { fromEvent } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { debounceTime, map } from 'rxjs/operators';
@@ -29,7 +35,7 @@ import { debounceTime, map } from 'rxjs/operators';
 })
 export class HelloComponent implements AfterViewInit {
   stockInput = new FormControl('');
-  @ViewChild('stockSymbol') myInputField: ElementRef;   // for addEventListener('keyup')
+  @ViewChild('stockSymbol') myInputField: ElementRef; // for addEventListener('keyup')
   @ViewChild('stockSymbolElement') myInputField2: ElementRef; // for fromEvent
   private timeout1;
 
@@ -44,7 +50,7 @@ export class HelloComponent implements AfterViewInit {
       clearTimeout(this.timeout1);
     }
     this.timeout1 = setTimeout(() => {
-      console.log('You have entered ' + event.target.value);
+      this.getStockPriceForOnKeyUp(event);
     }, 500);
   }
 
@@ -73,26 +79,31 @@ export class HelloComponent implements AfterViewInit {
 
   getStockPriceForOnKeyUp(event) {
     console.log(
-      `(OnKeyUp) The price of ${event.target.value} is ${( 100 * Math.random()).toFixed(4)}` );
+      `(OnKeyUp) The price of ${event.target.value} is $${(
+        100 * Math.random()
+      ).toFixed(2)}`
+    );
   }
 
   getStockQuoteForFromControl(stock: string) {
     console.log(
-      `(FormControl) The price of ${stock} is ${(100 * Math.random()).toFixed(
-        4
+      `(FormControl) The price of ${stock} is $${(100 * Math.random()).toFixed(
+        2
       )} `
     );
   }
   getStockQuoteForNativeElement(stock: string) {
     console.log(
-      `(NativeElemennt) The price of ${stock} is ${(
+      `(NativeElemennt) The price of $${stock} is ${(
         100 * Math.random()
-      ).toFixed(4)} `
+      ).toFixed(2)} `
     );
   }
   getStockPriceForAddEventListner(event) {
     console.log(
-      `(addEventListener) The price of ${event.target.value} is ${( 100 * Math.random()).toFixed(4)}`
+      `(addEventListener) The price of ${event.target.value} is $${(
+        100 * Math.random()
+      ).toFixed(2)}`
     );
   }
 }
